@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMMS Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- In a real application, you would link to an icon library like Font Awesome here -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>CMMS Pro</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="active" data-page="dashboard"><i class="icon icon-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="#work-orders" data-page="work-orders"><i class="icon icon-work-orders"></i> <span>Work Orders</span></a></li>
+                <li><a href="#assets" data-page="assets"><i class="icon icon-assets"></i> <span>Assets</span></a></li>
+                <li><a href="#preventive-maintenance" data-page="preventive-maintenance"><i class="icon icon-preventive-maintenance"></i> <span>Preventive Maint.</span></a></li>
+                <li><a href="#inventory" data-page="inventory"><i class="icon icon-inventory"></i> <span>Inventory</span></a></li>
+                <li><a href="#technicians" data-page="technicians"><i class="icon icon-technicians"></i> <span>Technicians</span></a></li>
+                <li><a href="#reports" data-page="reports"><i class="icon icon-reports"></i> <span>Reports</span></a></li>
+                <li><a href="#settings" data-page="settings"><i class="icon icon-settings"></i> <span>Settings</span></a></li>
+            </ul>
+            <div style="padding-top: 20px; border-top: 1px solid #34495e; margin-top:20px;">
+                 <ul class="nav-menu">
+                    <li><a href="#logout" data-page="logout"><i class="icon icon-logout"></i> <span>Logout</span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <!-- Page content will be loaded here by JavaScript -->
+            <div class="page-header">
+                <h2 id="pageTitle">Dashboard</h2>
+            </div>
+            <div class="content-area">
+                <p>Welcome to the CMMS dashboard. Select a module from the sidebar to get started.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Basic SPA-like navigation (very simplified)
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-menu a[data-page]');
+            const mainContent = document.getElementById('mainContent');
+            const pageTitle = document.getElementById('pageTitle');
+
+            const pageContent = {
+                dashboard: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="overview">Overview</span>
+                        <span class="tab-link" data-tab="kpis">KPIs</span>
+                        <span class="tab-link" data-tab="quick-links">Quick Links</span>
+                    </div>
+                    <div class="tab-content" id="dashboard-overview">
+                        <div class="card">
+                            <div class="card-header">Active Work Orders</div>
+                            <p>You have <strong>5</strong> active work orders.</p>
+                            <a href="#work-orders" class="btn btn-primary btn-sm" data-page-load="work-orders">View Work Orders</a>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">Upcoming Tasks</div>
+                            <p><strong>3</strong> preventive maintenance tasks due this week.</p>
+                             <a href="#preventive-maintenance" class="btn btn-secondary btn-sm" data-page-load="preventive-maintenance">View Schedule</a>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="dashboard-kpis" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">Key Performance Indicators</div>
+                            <p>MTBF: <strong>1500 hours</strong></p>
+                            <p>Asset Uptime: <strong>98.5%</strong></p>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="dashboard-quick-links" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">Quick Links</div>
+                            <a href="#" class="btn btn-primary">New Work Order</a>
+                            <a href="#" class="btn btn-secondary">Find Asset</a>
+                        </div>
+                    </div>
+                `,
+                "work-orders": `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="all">All Orders</span>
+                        <span class="tab-link" data-tab="open">Open</span>
+                        <span class="tab-link" data-tab="in-progress">In Progress</span>
+                        <span class="tab-link" data-tab="closed">Closed</span>
+                    </div>
+                    <div class="d-flex justify-between align-center mb-2">
+                        <h3>Work Order List</h3>
+                        <button class="btn btn-primary">Create New Work Order</button>
+                    </div>
+                    <div class="card">
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                        <th>Asset</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Assigned To</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>WO-001</td>
+                                        <td>Fix conveyor belt</td>
+                                        <td>Conveyor #1</td>
+                                        <td><span class="status status-open">Open</span></td>
+                                        <td><span class="status status-high-priority">High</span></td>
+                                        <td>John Doe</td>
+                                        <td>2024-07-28</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>WO-002</td>
+                                        <td>Routine Pump Inspection</td>
+                                        <td>Pump Station A</td>
+                                        <td><span class="status status-in-progress">In Progress</span></td>
+                                        <td><span class="status status-normal">Normal</span></td>
+                                        <td>Jane Smith</td>
+                                        <td>2024-07-30</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>WO-003</td>
+                                        <td>Replace Filter</td>
+                                        <td>HVAC Unit 3</td>
+                                        <td><span class="status status-closed">Closed</span></td>
+                                        <td><span class="status status-normal">Low</span></td>
+                                        <td>Mike Brown</td>
+                                        <td>2024-07-25</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                assets: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="all-assets">All Assets</span>
+                        <span class="tab-link" data-tab="by-location">By Location</span>
+                        <span class="tab-link" data-tab="by-status">By Status</span>
+                    </div>
+                     <div class="d-flex justify-between align-center mb-2">
+                        <h3>Asset List</h3>
+                        <button class="btn btn-primary">Add New Asset</button>
+                    </div>
+                    <div class="card">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search assets by name, ID, or location...">
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Asset ID</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Last Maintenance</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ASSET-001</td>
+                                        <td>Main Compressor</td>
+                                        <td>Plant A, Section 1</td>
+                                        <td><span class="status status-open">Operational</span></td>
+                                        <td>2024-06-15</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ASSET-002</td>
+                                        <td>Forklift #3</td>
+                                        <td>Warehouse B</td>
+                                        <td><span class="status status-in-progress">Needs Repair</span></td>
+                                        <td>2024-07-01</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                "preventive-maintenance": `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="calendar">Calendar View</span>
+                        <span class="tab-link" data-tab="task-list">Task List</span>
+                        <span class="tab-link" data-tab="recurring-jobs">Recurring Jobs</span>
+                    </div>
+                    <div class="d-flex justify-between align-center mb-2">
+                        <h3>Preventive Maintenance Schedule</h3>
+                        <button class="btn btn-primary">Schedule New PM Task</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Calendar (Placeholder)</div>
+                        <p>A calendar view for PM tasks would be displayed here. For now, here's a list:</p>
+                         <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Task ID</th>
+                                        <th>Description</th>
+                                        <th>Asset</th>
+                                        <th>Frequency</th>
+                                        <th>Next Due</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>PM-001</td>
+                                        <td>Monthly Generator Check</td>
+                                        <td>Generator G1</td>
+                                        <td>Monthly</td>
+                                        <td>2024-08-01</td>
+                                        <td><span class="status status-open">Scheduled</span></td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                     <tr>
+                                        <td>PM-002</td>
+                                        <td>Quarterly HVAC Servicing</td>
+                                        <td>HVAC Unit 5</td>
+                                        <td>Quarterly</td>
+                                        <td>2024-09-15</td>
+                                        <td><span class="status status-open">Scheduled</span></td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">Details</a> <a href="#" class="btn btn-warning btn-sm">Edit</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                inventory: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="stock-list">Stock List</span>
+                        <span class="tab-link" data-tab="low-stock">Low Stock Alerts</span>
+                        <span class="tab-link" data-tab="purchase-orders">Purchase Orders</span>
+                    </div>
+                     <div class="d-flex justify-between align-center mb-2">
+                        <h3>Inventory Management</h3>
+                        <button class="btn btn-primary">Add New Item</button>
+                    </div>
+                    <div class="card">
+                         <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search inventory items...">
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item ID</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Min. Stock</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>INV-001</td>
+                                        <td>Air Filter XL</td>
+                                        <td>50</td>
+                                        <td>20</td>
+                                        <td>Shelf A1</td>
+                                        <td><a href="#" class="btn btn-warning btn-sm">Reorder</a> <a href="#" class="btn btn-secondary btn-sm">Details</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>INV-002</td>
+                                        <td>Lubricant Oil (5L)</td>
+                                        <td>15</td>
+                                        <td>10</td>
+                                        <td>Shelf B3</td>
+                                        <td><span class="status status-warning" style="background-color: #f39c12; color:white; margin-right:5px;">Low Stock</span> <a href="#" class="btn btn-warning btn-sm">Reorder</a> <a href="#" class="btn btn-secondary btn-sm">Details</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                technicians: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="assignment-board">Assignment Board</span>
+                        <span class="tab-link" data-tab="availability">Availability</span>
+                        <span class="tab-link" data-tab="workload">Workload</span>
+                    </div>
+                    <div class="d-flex justify-between align-center mb-2">
+                        <h3>Technician Assignment</h3>
+                         <button class="btn btn-primary">Add Technician</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Assignment Board (Placeholder)</div>
+                        <p>A visual board (e.g., Kanban or calendar-based) for assigning technicians to work orders would be here.</p>
+                        <div class="table-wrapper">
+                             <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Technician</th>
+                                        <th>Current Tasks</th>
+                                        <th>Availability</th>
+                                        <th>Skills</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>WO-001, WO-005</td>
+                                        <td><span class="status status-open">Available</span></td>
+                                        <td>Electrical, Mechanical</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">View Schedule</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jane Smith</td>
+                                        <td>WO-002</td>
+                                        <td><span class="status status-in-progress">Busy</span></td>
+                                        <td>Plumbing, HVAC</td>
+                                        <td><a href="#" class="btn btn-secondary btn-sm">View Schedule</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                reports: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="maintenance-costs">Maintenance Costs</span>
+                        <span class="tab-link" data-tab="downtime">Downtime Analysis</span>
+                        <span class="tab-link" data-tab="mtbf-mttr">MTBF/MTTR</span>
+                    </div>
+                    <h3>Reports</h3>
+                    <div class="card">
+                        <div class="card-header">Maintenance Cost Report (Placeholder)</div>
+                        <p>Charts and tables related to maintenance costs would be displayed here.</p>
+                        <img src="https://via.placeholder.com/600x300.png?text=Cost+Chart+Example" alt="Placeholder Chart" style="max-width:100%; height:auto;">
+                        <br><br>
+                        <button class="btn btn-success">Download Report (CSV)</button>
+                        <button class="btn btn-danger">Download Report (PDF)</button>
+                    </div>
+                `,
+                settings: `
+                    <div class="top-tabs">
+                        <span class="tab-link active" data-tab="user-roles">User Roles</span>
+                        <span class="tab-link" data-tab="permissions">Permissions</span>
+                        <span class="tab-link" data-tab="notifications">Notifications</span>
+                        <span class="tab-link" data-tab="account">Account</span>
+                    </div>
+                    <h3>Settings</h3>
+                    <div class="card">
+                        <div class="card-header">User Roles & Permissions (Placeholder)</div>
+                        <form>
+                            <div class="form-group">
+                                <label for="userRole">Select Role to Manage:</label>
+                                <select id="userRole" class="form-control">
+                                    <option>Administrator</option>
+                                    <option>Manager</option>
+                                    <option>Technician</option>
+                                    <option>Viewer</option>
+                                </select>
+                            </div>
+                            <p>Permission settings for the selected role would be displayed here.</p>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                     <div class="card">
+                        <div class="card-header">Notification Settings</div>
+                        <form>
+                            <div class="form-group">
+                                <label>Email Notifications:</label><br>
+                                <input type="checkbox" id="emailNewWO" checked> <label for="emailNewWO">New Work Order Created</label><br>
+                                <input type="checkbox" id="emailTaskAssigned" checked> <label for="emailTaskAssigned">Task Assigned to Me</label><br>
+                                <input type="checkbox" id="emailTaskCompleted"> <label for="emailTaskCompleted">Task Completed</label>
+                            </div>
+                             <div class="form-group">
+                                <label>SMS Notifications:</label><br>
+                                <input type="checkbox" id="smsUrgentWO"> <label for="smsUrgentWO">Urgent Work Order Alert</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                        </form>
+                    </div>
+                `,
+                 logout: `
+                    <div class="card">
+                        <div class="card-header">Logout</div>
+                        <p>You have been successfully logged out.</p>
+                        <a href="#dashboard" class="btn btn-primary" data-page-load="dashboard">Login Again (Return to Dashboard)</a>
+                    </div>
+                `
+            };
+
+            function loadPage(pageName) {
+                if (pageContent[pageName]) {
+                    const pageData = pageContent[pageName];
+                    let title = pageName.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                    if (pageName === 'preventive-maintenance') title = "Preventive Maintenance";
+
+                    pageTitle.textContent = title;
+                    // Replace existing content area, but keep the page header structure
+                    const contentArea = mainContent.querySelector('.content-area');
+                    if (contentArea) {
+                        contentArea.innerHTML = pageData;
+                    } else {
+                        // Fallback if .content-area is somehow missing
+                        mainContent.innerHTML = `
+                            <div class="page-header"><h2 id="pageTitle">${title}</h2></div>
+                            <div class="content-area">${pageData}</div>`;
+                    }
+
+                    // Re-attach tab listeners if the new content has tabs
+                    attachTabListeners();
+                    attachPageLoadListeners();
+
+                } else {
+                    mainContent.querySelector('.content-area').innerHTML = '<p>Page not found.</p>';
+                    pageTitle.textContent = 'Error';
+                }
+            }
+
+            function attachTabListeners() {
+                const currentTabs = mainContent.querySelectorAll('.top-tabs .tab-link');
+                currentTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all tabs in this group
+                        const tabGroup = this.closest('.top-tabs').querySelectorAll('.tab-link');
+                        tabGroup.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+
+                        // Show/hide tab content
+                        const tabContentId = `${pageTitle.textContent.toLowerCase().replace(/\s+/g, '-')}-${this.dataset.tab}`;
+                        const allTabContents = this.closest('.main-content').querySelectorAll('.tab-content');
+                        allTabContents.forEach(content => content.style.display = 'none');
+
+                        const activeTabContent = document.getElementById(tabContentId);
+                        if(activeTabContent) {
+                            activeTabContent.style.display = 'block';
+                        } else {
+                            // Fallback if ID scheme is slightly different (e.g. dashboard)
+                             const fallbackId = `${pageTitle.textContent.toLowerCase()}-${this.dataset.tab}`;
+                             const fallbackContent = document.getElementById(fallbackId);
+                             if(fallbackContent) fallbackContent.style.display = 'block';
+                        }
+                    });
+                });
+            }
+
+            function attachPageLoadListeners() {
+                const pageLoadLinks = mainContent.querySelectorAll('[data-page-load]');
+                pageLoadLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const pageName = this.dataset.pageLoad;
+
+                        // Update sidebar active state
+                        navLinks.forEach(nl => nl.classList.remove('active'));
+                        const newActiveSidebarLink = document.querySelector(`.nav-menu a[data-page="${pageName}"]`);
+                        if (newActiveSidebarLink) newActiveSidebarLink.classList.add('active');
+
+                        loadPage(pageName);
+                        history.pushState({page: pageName}, '', `#${pageName}`);
+                    });
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const pageName = this.dataset.page;
+
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    this.classList.add('active');
+
+                    loadPage(pageName);
+                    history.pushState({page: pageName}, '', `#${pageName}`);
+                });
+            });
+
+            // Load initial page based on URL hash or default to dashboard
+            let initialPage = window.location.hash.substring(1) || 'dashboard';
+            if (!pageContent[initialPage]) initialPage = 'dashboard'; // Fallback if hash is invalid
+
+            const initialLink = document.querySelector(`.nav-menu a[data-page="${initialPage}"]`);
+            if (initialLink) {
+                initialLink.classList.add('active');
+            }
+            loadPage(initialPage);
+
+            // Handle browser back/forward
+            window.onpopstate = function(event) {
+                if (event.state && event.state.page) {
+                     navLinks.forEach(nl => nl.classList.remove('active'));
+                     const activeLink = document.querySelector(`.nav-menu a[data-page="${event.state.page}"]`);
+                     if(activeLink) activeLink.classList.add('active');
+                     loadPage(event.state.page);
+                } else {
+                    // If no state, default to dashboard or current hash
+                    let page = window.location.hash.substring(1) || 'dashboard';
+                    if (!pageContent[page]) page = 'dashboard';
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    const activeLink = document.querySelector(`.nav-menu a[data-page="${page}"]`);
+                    if(activeLink) activeLink.classList.add('active');
+                    loadPage(page);
+                }
+            };
+        });
+    </script>
+</body>
+</html>
